@@ -13,7 +13,7 @@
   <body>
     
     <div class="container">
-        <button type="button" class="btn btn-primary my-3" data-toggle="button" aria-pressed="false">
+        <button type="button" class="btn btn-primary my-3" onclick="changeAllbackgrounds()"data-toggle="button" aria-pressed="false">
             Add to Cart
           </button>
         <div id="myList" class="row">
@@ -29,9 +29,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 
    <script>
+   let newlist=[];   
+const add=function(event){
+const bookdiv =event.currentTarget.closest(".bookdiv" )
+bookdiv.style.backgroundColor="blue"
 
+}
 
-fetch("https://striveschool-api.herokuapp.com/books")
+ window.onload=()=>{
+fetch("https://striveschool-api.herokuapp.com/books") 
      
      .then((response) => {
        return response.json();
@@ -42,17 +48,28 @@ fetch("https://striveschool-api.herokuapp.com/books")
             for (let i = 0; i < response.length; i++) {
               const listItem = document.createElement("div");
               const imglist = document.createElement("div");
-              listItem.classList.add("col-3");
+              listItem.classList.add("col-3","bookdiv");
               imglist.classList.add("img-fluid");
               imglist.innerHTML = `  <img class="img-fluid"   src=${response[i].img} />`
               listItem.innerHTML = `  <p class= "text-center">${response[i].title} </p>`
+              const addtocart= document.createElement("button")
+              addtocart.innerText="addtocart"
               listItem.style.background="black"
               listItem.style.color="white"
 
               list.appendChild(listItem);
               listItem.appendChild(imglist);
+              listItem.appendChild(addtocart);
+
+              addtocart.addEventListener("click", add)
+              addtocart.addEventListener("click", newbooks)
+              
+              
 
             }
+           
+
+        
 
   
                   
@@ -66,7 +83,31 @@ fetch("https://striveschool-api.herokuapp.com/books")
      .catch(err => {
        console.error(err);
      });
-     
+    }
+     const changeAllbackgrounds =()=>{
+                const bookdivlist= document.querySelectorAll(".bookdiv")
+                bookdivlist.forEach(element => {
+                    element.style.backgroundColor="green"
+                
+                    
+                });
+            }
+        const newbooks=()=>{
+            const newitems=document.querySelectorAll(".bookdiv")
+            const maindiv=document.querySelector(".container")
+            for (let i = 0; i < newitems.length; i++){
+                let arr= newlist.push(newitems[i])
+                console.log(arr)
+                let bookstoread=document.createElement("div")
+                bookstoread.classList.add("row")
+                maindiv.appendChild(bookstoread)
+
+
+            
+
+            }
+        }
+              
    </script>
   </body>
 </html>
